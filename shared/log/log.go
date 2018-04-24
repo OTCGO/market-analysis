@@ -3,7 +3,6 @@ package log
 import (
 	"encoding/json"
 	"fmt"
-
 	"market-analysis/config"
 
 	"github.com/pkg/errors"
@@ -13,7 +12,8 @@ import (
 
 var logger *zap.Logger
 
-func InitLogger(configration *config.Config) {
+func InitLogger() {
+	configration, _ := config.GetConfig()
 	rawJSON := fmt.Sprintf(`{
 		"level": "%s",
 		"encoding": "json",

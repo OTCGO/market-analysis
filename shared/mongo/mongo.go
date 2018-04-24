@@ -1,7 +1,6 @@
 package mongo
 
 import (
-	"fmt"
 	"market-analysis/config"
 
 	"github.com/pkg/errors"
@@ -27,13 +26,14 @@ func New(configration *config.Config) (db *mgo.Database, err error) {
 var sessionMongo *mgo.Session
 var DataBase string
 
-func InitMongo(configration *config.Config) {
+func InitMongo() {
+	configration, _ := config.GetConfig()
 	session, err := mgo.Dial(configration.MongoConfiguration.Url)
 	//SetPoolLimit
 	session.SetPoolLimit(configration.MongoConfiguration.PoolLimit)
 	DataBase = configration.MongoConfiguration.Db
 	if err != nil {
-		fmt.Printf("连接mongodb失败:%s\n", err)
+		errors.Wrap(err, "mongo connet error")
 	}
 	sessionMongo = session
 }
@@ -46,15 +46,4 @@ func GetSession() *mgo.Session {
 		return nil
 	}
 	return sessionMongo.Clone()
-}
-
-/**
- * GetSesExecMongosion
- */
-func ExecMongo(collection string, s func(*mgo.Collection) error) error {
-	session := GetSession()
-	//defer close  session
-	defer session.Close()
-	c := session.DB(DataBase).C(collection)
-	return s(c)
 }

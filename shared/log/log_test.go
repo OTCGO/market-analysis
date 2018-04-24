@@ -8,6 +8,6 @@ import (
 func TestLog(t *testing.T) {
 	conf, _ := config.Load("../../config", "config")
 	t.Log("conf", conf)
-	InitLogger(&conf)
+	InitLogger()
 	GetLogger().Info("TestLog")
 }

@@ -1,6 +1,8 @@
 package config
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 )
@@ -51,10 +53,13 @@ func Load(path string, name string) (config *Config, err error) {
 		return &Config{}, errors.Wrap(err, "Problem unmarshaling config json data")
 	}
 	conf = config
+
+	fmt.Println("conf", conf)
 	return config, nil
 }
 
 func GetConfig() (config *Config, err error) {
+	fmt.Println("GetConfig", conf)
 	if conf == nil {
 		errors.Wrap(err, "viper ReadInConfig error")
 	}
