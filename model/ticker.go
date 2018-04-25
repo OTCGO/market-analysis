@@ -32,7 +32,7 @@ import (
 type Ticker struct {
 	Id_              bson.ObjectId `bson:"_id"`
 	Name             string        `json:"name" bson:"name"`
-	Symbol           string        `json:"rank" bson:"rank"`
+	Symbol           string        `json:"symbol" bson:"symbol"`
 	PriceUsd         string        `json:"price_usd" bson:"price_usd"`
 	PriceBtc         string        `json:"price_btc" bson:"price_btc"`
 	VolumeUsd24h     string        `json:"24h_volume_usd" bson:"24h_volume_usd"`
