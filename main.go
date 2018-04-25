@@ -20,9 +20,10 @@ var maxRoutineNum int = 10
 
 var page = 50
 var pageCount int = 10
+var configration *config.Config
 
 func init() {
-	config.Load("./config", "config")
+	configration, _ = config.Load("./config", "config")
 	log.InitLogger()
 	mongo.InitMongo()
 	logger = log.GetLogger()
@@ -38,28 +39,9 @@ func main() {
 
 	c := cron.New()
 	// second minute hour day_of_month month day_of_week
-	c.AddFunc("0 */1 * * * *", func() {
+	c.AddFunc(configration.ApplicationConfiguration.CronTime, func() {
 		fmt.Println("Every minute", time.Now().Format("2006-01-02 15:04:05"))
-
-		// make two channel。
-		jobs := make(chan int, 100)
-		results := make(chan int, 100)
-
-		// startup
-		for w := 1; w <= maxRoutineNum; w++ {
-			go worker(w, jobs, results)
-		}
-
-		for j := 1; j <= pageCount; j++ {
-			jobs <- j
-		}
-		close(jobs)
-
-		//handle result
-		for a := 1; a <= pageCount; a++ {
-			<-results
-		}
-
+		startup()
 	})
 
 	c.Start()
@@ -67,7 +49,7 @@ func main() {
 	select {}
 }
 
-//这个是工作线程，处理具体的业务逻辑，将jobs中的任务取出，处理后将处理结果放置在results中。
+//result channel
 func worker(id int, jobs <-chan int, results chan<- int) {
 	for j := range jobs {
 		fmt.Println("worker", id, "processing job", j)
@@ -85,5 +67,26 @@ func worker(id int, jobs <-chan int, results chan<- int) {
 		}
 
 		results <- j
+	}
+}
+
+func startup() {
+	// make two channel。
+	jobs := make(chan int, 100)
+	results := make(chan int, 100)
+
+	// startup
+	for w := 1; w <= maxRoutineNum; w++ {
+		go worker(w, jobs, results)
+	}
+
+	for j := 1; j <= pageCount; j++ {
+		jobs <- j
+	}
+	close(jobs)
+
+	//handle result
+	for a := 1; a <= pageCount; a++ {
+		<-results
 	}
 }

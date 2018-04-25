@@ -19,6 +19,7 @@ type (
 	// ApplicationConfiguration config specific to the node.
 	ApplicationConfiguration struct {
 		CoinMarketCapURL string
+		CronTime         string
 	}
 
 	// LogConfiguration
