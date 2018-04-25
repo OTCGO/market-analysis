@@ -45,6 +45,6 @@ func (m *Market) GetTicker(start int, limit int) (tickers []*model.Ticker, err e
 	if err != nil {
 		errors.Wrap(err, "json.Unmarshal error")
 	}
-	//logger.Info("GetTicker:tickers", zap.String("tickers", fmt.Sprintf("%v", len(tickers))))
+	logger.Info("GetTicker:tickers", zap.String("tickers", fmt.Sprintf("%v", len(tickers))))
 	return tickers, err
 }

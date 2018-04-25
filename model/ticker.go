@@ -33,6 +33,7 @@ type Ticker struct {
 	Id_              bson.ObjectId `bson:"_id"`
 	Name             string        `json:"name" bson:"name"`
 	Symbol           string        `json:"symbol" bson:"symbol"`
+	Rank             string        `json:"rank" bson:"rank"`
 	PriceUsd         string        `json:"price_usd" bson:"price_usd"`
 	PriceBtc         string        `json:"price_btc" bson:"price_btc"`
 	VolumeUsd24h     string        `json:"24h_volume_usd" bson:"24h_volume_usd"`
@@ -50,14 +51,19 @@ type Ticker struct {
 }
 
 func (t *Ticker) CreateIndex() (err error) {
-	index := mgo.Index{
-		Key:    []string{"last_updated"},
-		Unique: true,
-	}
 	session := mongo.GetSession()
 	// close session
 	defer session.Clone()
-	err = session.DB(mongo.DataBase).C("Ticker").EnsureIndex(index)
+	err = session.DB(mongo.DataBase).C("Ticker").EnsureIndex(mgo.Index{
+		Key:    []string{"last_updated", "name"},
+		Unique: true,
+	})
+	err = session.DB(mongo.DataBase).C("Ticker").EnsureIndex(mgo.Index{
+		Key: []string{"rank"},
+	})
+	err = session.DB(mongo.DataBase).C("Ticker").EnsureIndex(mgo.Index{
+		Key: []string{"name"},
+	})
 	return err
 }
 

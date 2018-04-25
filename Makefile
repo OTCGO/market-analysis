@@ -1,12 +1,20 @@
 .PHONY: build deps run clean
 
+MAIN = "main.go"
+OUTPUT = "./bin/main"
+
 build:
-	@go build main.go 
+	@go build -o ${OUTPUT} ${MAIN}  
 
 deps:
 	@dep ensure 
 
-run:
-	./main
+pull:
+	git reset --hard
+	git pull origin master
+
+run: pull build
+	${OUTPUT}
+
 clean:
-	rm ./main
+	rm -rf ${OUTPUT}
