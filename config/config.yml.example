@@ -1,0 +1,11 @@
+applicationConfiguration:
+  coinMarketCapURL: https://api.coinmarketcap.com
+
+logConfiguration:
+  level: debug
+  output:  
+
+MongoConfiguration:
+  url: 
+  poolLimit: 300
+  db: market
