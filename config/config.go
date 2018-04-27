@@ -20,6 +20,7 @@ type (
 	ApplicationConfiguration struct {
 		CoinMarketCapURL string
 		CronTime         string
+		Debug            bool
 	}
 
 	// LogConfiguration

@@ -34,7 +34,7 @@ func (m *Market) GetTicker(start int, limit int) (tickers []*model.Ticker, err e
 	_, body, _ := gorequest.New().Get(url).End()
 
 	// logger.Info("GetTicker:body", zap.String("body", body))
-	// fmt.Println("body", body)
+	fmt.Println("body", body)
 	// fmt.Println("rs", rs)
 
 	// tickers = make([]model.Ticker, 0)

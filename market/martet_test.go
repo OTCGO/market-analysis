@@ -16,7 +16,7 @@ func init() {
 }
 
 func TestGetTicker(t *testing.T) {
-	tickers, _ := (&Market{}).GetTicker()
+	tickers, _ := (&Market{}).GetTicker(0, 50)
 	assert.NotNil(t, tickers)
 
 }
